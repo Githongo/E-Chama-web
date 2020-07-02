@@ -26,7 +26,5 @@ class HomeController extends Controller
         return view('home')->with('title', 'Home');
     }
 
-    public function newLoan(){
-        return view('pages.newloan');
-    }
+    
 }

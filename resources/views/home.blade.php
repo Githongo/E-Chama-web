@@ -12,8 +12,8 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Contributions (Monthly)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">5,000 <sup>KES<sup></div>
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">My Wallet</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ Auth::user()->wallet }} <sup>KES<sup></div>
                     </div>
                     
                   </div>
@@ -67,31 +67,41 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                                
+                    @if (Session::has('form_status'))
+                        <div class="alert alert-info" role="alert">
+                            {{ session('form_status')  }}
+                        </div> 
+                    @endif
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <em>Errors:</em>
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
 
 
                     <div class="row">
                         <div class="col-md-4 col-sm-4">
                         <div class="wrimagecard wrimagecard-topimage">
-                            <a href="#" 
-                            onclick=" //modal content setting js 
-                            var price = document.getElementById('inputPhone');
-                            price.value = 2547;
-
-                                "
-                            data-toggle="modal" data-target="#contributeModal">
+                            <a href="{{ route('transactions.index') }}">
                             <div class="wrimagecard-topimage_header" style="background-color: rgba(22, 160, 133, 0.1)">
-                                <center><i class="fa fa-send" style="color:#16A085"></i></center>
-                            </div>
-                            <div class="wrimagecard-topimage_title">
-                                <h4>Contribute
-                                <div class="pull-right badge">7/2020</div></h4>
-                            </div>
+                                <center><i class = "fa fa-mobile" style="color:#16A085"></i></center>
+                                </div>
+                                <div class="wrimagecard-topimage_title">
+                                    <h4>Transact
+                                    <div class="pull-right badge" id="WrControls"></div></h4>
+                                </div>
                             </a>
                         </div>
                         </div>
                         <div class="col-md-4 col-sm-4">
                         <div class="wrimagecard wrimagecard-topimage">
-                            <a href="{{ route('newloan') }}">
+                            <a href="{{ route('loans.index') }}">
                             <div class="wrimagecard-topimage_header" style="background-color: rgba(22, 160, 133, 0.1)">
                                 <center><i class = "fa fa-dollar" style="color:#16A085"></i></center>
                             </div>
@@ -119,15 +129,16 @@
                         </div>
                         <div class="col-md-4 col-sm-4">
                         <div class="wrimagecard wrimagecard-topimage">
-                            <a href="#">
+                            <a href="#" 
+                                onclick=" //modal content setting js 
+                                var content = document.getElementById('modal_content').innerHTML='Nothing to see here';" data-toggle="modal" data-target="#contributeModal">
                             <div class="wrimagecard-topimage_header" style="background-color:  rgba(51, 105, 232, 0.1)">
-                                <center><i class="fa fa-table" style="color:#3369e8"> </i></center>
+                                <center><i class="fa fa-info" style="color:#3369e8"></i></center>
                             </div>
                             <div class="wrimagecard-topimage_title">
-                                <h4>Ledger
-                                <div class="pull-right badge" id="WrGridSystem"></div></h4>
+                                <h4>Info
+                                <div class="pull-right badge"></div></h4>
                             </div>
-                            
                             </a>
                         </div>
                         </div>
@@ -135,10 +146,10 @@
                         <div class="wrimagecard wrimagecard-topimage">
                             <a href="#">
                             <div class="wrimagecard-topimage_header" style="background-color:  rgba(250, 188, 9, 0.1)">
-                                <center><i class="fa fa-info-circle" style="color:#fabc09"> </i></center>
+                                <center><i class="fa fa-table" style="color:#fabc09"> </i></center>
                             </div>
                             <div class="wrimagecard-topimage_title">
-                                <h4>Information
+                                <h4>Ledger
                                 <div class="pull-right badge" id="WrInformation"></div></h4>
                             </div>
                             
@@ -185,24 +196,8 @@
 
         <!-- Modal body -->
         <div class="modal-body" id="modal_body">
-        <center><img src="{{ asset('assets/img/mpesa.png') }}" alt="mpesa-logo"></img></center>
-        
-        <form method="POST" action=''  class="" enctype = 'multipart/form-data'>
-            @csrf
-            <div class="form-group"><label class="small mb-1" for="inputPhone">Mpesa Phone</label><input class="form-control" id="inputPhone" type="text" placeholder="e.g. 254722000000" name="phone" required/></div>
-            <div class="form-group"><label class="small mb-1" for="inputAmount">Amount</label><input class="form-control" id="inputAmount" type="number" placeholder="Enter Amount" name="amount" required/></div>
-            
-        </div>
-
-    
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-            
-            <center><button class="btn btn-success" type="submit" value="Submit" name="upload">Send</button><br><br></center>
-            
-        </div>
-        </form>
+        <center><h5>Notices and Announcements<h5></center>
+            <p id="modal_content"></p>
         </div>
     </div>
     </div>
