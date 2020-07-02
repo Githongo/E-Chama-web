@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\User;
 
 class UserController extends Controller
@@ -15,7 +16,14 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::all();
+        $users = User::all();
+
+        return response(["data" => [
+            "success" => 1,
+            "message" => "Fetched all users",
+            "user" => $users
+        ]]);
+
     }
 
     /**
@@ -32,13 +40,19 @@ class UserController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-        return User::create([
+        $newUser = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'phone' => $data['phone'],
             'wallet' => 0.00,
             'password' => Hash::make($data['password']),
         ]);
+
+        return response(["data" => [
+            "success" => 1,
+            "message" => "User registered successfully",
+            "user" => $newUser
+        ]]);
     }
 
     /**

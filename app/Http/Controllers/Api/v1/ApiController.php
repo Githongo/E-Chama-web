@@ -18,14 +18,14 @@ class ApiController extends Controller
         //Check if user has an existing request for a loan
         if(Loan::where('user_id', '=', request('user_id'))->where( 'status', '=', "Requested" )->exists()){
             return json_encode(["data" => [
-                "success" => "0",
+                "success" => 0,
                 "submitted" => false,
                 "message" => "You Already have an existing Request for a Loan!"
             ]]);
         }
         if(!User::where('id', '=', request('user_id'))->exists()){
             return json_encode(["data" => [
-                "success" => "0",
+                "success" => 0,
                 "submitted" => false,
                 "message" => "The User Identifier provided is invalid"
             ]]);
@@ -58,7 +58,7 @@ class ApiController extends Controller
         }
         else{
             return json_encode(["data" => [
-                "success" => "0",
+                "success" => 0,
                 "submitted" => false,
                 "message" => "Input validation failed"
             ]]);
@@ -67,13 +67,13 @@ class ApiController extends Controller
         //JSON Response
         if($loan->save()){
             return json_encode(["data" => [
-                "success" => "1",
+                "success" => 1,
                 "submitted" => true,
                 "message" => "Loan Application Successful"
             ]]);
         }else{
             return json_encode(["data" => [
-                "success" => "0",
+                "success" => 0,
                 "submitted" => false,
                 "message" => "Loan Application failed, please try agaoin later"
             ]]);
@@ -86,7 +86,7 @@ class ApiController extends Controller
     public function newTransaction(Request $request){
         if(!User::where('id', '=', request('user_id'))->exists()){
             return response(["data" => [
-                "success" => "0",
+                "success" => 0,
                 "submitted" => false,
                 "message" => "The User Identifier provided is invalid"
             ]]);
@@ -116,7 +116,7 @@ class ApiController extends Controller
                     }
                     else{
                         return response(["data" => [
-                            "success" => "0",
+                            "success" => 0,
                             "submitted" => false,
                             "message" => "You have no active loans to service"
                         ]]);
@@ -134,7 +134,7 @@ class ApiController extends Controller
             else{
                 
                 return response(["data" => [
-                    "success" => "0",
+                    "success" => 0,
                     "submitted" => false,
                     "message" => "Input validation failed"
                 ]]);
@@ -143,13 +143,13 @@ class ApiController extends Controller
             //JSON ResponseFeedback
             if($transaction->save()){    
                 return response(["data" => [
-                    "success" => "1",
+                    "success" => 1,
                     "submitted" => true,
                     "message" => "Request Successful, check your phone for STK Push notification"
                 ]]);
             }else{
                 return response(["data" => [
-                    "success" => "0",
+                    "success" => 0,
                     "submitted" => false,
                     "message" => "Transaction failed, please try agaoin later"
                 ]]);

@@ -19,7 +19,7 @@ class AuthenticationController extends Controller
             $user = new UserResource((Auth::user()));
             $token = Auth::user()->createToken('authToken')->accessToken;
             return response([ "data" => [
-                "success" => "1",
+                "success" => 1,
                 "authorized" => true,
                 "message" => "Authenticated successfully",
                 "user" => Auth::user(),
@@ -28,7 +28,7 @@ class AuthenticationController extends Controller
         }
         else{
             return response(["data" => [
-                "success" => "0",
+                "success" => 0,
                 "authorized" => false,
                 "message" => "Invalid Credentials"
             ]]);

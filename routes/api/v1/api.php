@@ -22,7 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('/user')->group( function(){
     Route::post('oauth', 'Api\v1\AuthenticationController@authenticate');
     Route::get('/all', 'api\v1\UserController@index')->middleware('auth:api');
-    Route::post('/new', 'api\v1\UserController@create')->middleware('auth:api');
+    Route::post('/new', 'api\v1\UserController@create');
     
     
 });
