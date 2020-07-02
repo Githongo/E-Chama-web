@@ -21,17 +21,19 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //user
 Route::prefix('/user')->group( function(){
     Route::post('oauth', 'Api\v1\AuthenticationController@authenticate');
-    Route::get('/all', 'api\v1\UserController@index')->middleware('auth:api');
-    Route::post('/new', 'api\v1\UserController@create');
-    
+    Route::get('all', 'api\v1\UserController@index')->middleware('auth:api');
+    Route::post('new', 'api\v1\UserController@create');
+    Route::post('forgot', 'Auth\ForgotPasswordController');
     
 });
 
 Route::prefix('/process')->group( function(){
-    Route::post('/loans/new', 'api\v1\ApiController@newLoan')->middleware('auth:api');
-    Route::post('/transactions/new', 'api\v1\ApiController@newTransaction')->middleware('auth:api');
+    Route::post('loans/new', 'api\v1\ApiController@newLoan')->middleware('auth:api');
+    Route::post('transactions/new', 'api\v1\ApiController@newTransaction')->middleware('auth:api');
     
 });
+
+
 
 
 

@@ -131,7 +131,7 @@
                         <div class="wrimagecard wrimagecard-topimage">
                             <a href="#" 
                                 onclick=" //modal content setting js 
-                                var content = document.getElementById('modal_content').innerHTML='Nothing to see here';" data-toggle="modal" data-target="#contributeModal">
+                                var content = document.getElementById('modal_content').innerHTML='Nothing to see here';" data-toggle="modal" data-target="#noticesModal">
                             <div class="wrimagecard-topimage_header" style="background-color:  rgba(51, 105, 232, 0.1)">
                                 <center><i class="fa fa-info" style="color:#3369e8"></i></center>
                             </div>
@@ -176,32 +176,33 @@
 
 
                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
     <!-- The Modal -->
-    <div class="modal " id="contributeModal" data-keyboard="false">
+    <div class="modal " id="noticesModal" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
 
         <!-- Modal Header -->
         <div class="modal-header">
-            <h4 id="item_name" class="modal-title">Contribute through M-Pesa</h4>
+            <h4 class="modal-title">Notices</h4>
             <button onclick="location.reload()" type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <!-- Modal body -->
         <div class="modal-body" id="modal_body">
-        <center><h5>Notices and Announcements<h5></center>
+        
             <p id="modal_content"></p>
         </div>
     </div>
     </div>
     <!--modale end-->
+
 
 
 @endsection

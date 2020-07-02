@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->double('wallet', 8, 2);
             $table->string('password');
+            $table->boolean('rotation')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

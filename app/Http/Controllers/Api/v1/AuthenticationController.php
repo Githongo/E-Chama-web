@@ -34,4 +34,16 @@ class AuthenticationController extends Controller
             ]]);
         }
     }
+
+    public function resetPassword(Request $request){
+        $email = $request->validate(['email' => ['required', 'email']]);
+        
+
+
+        return response(["data" => [
+            "success" => 1
+        ]]);
+
+
+    }
 }

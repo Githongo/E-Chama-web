@@ -21,7 +21,7 @@ class UserController extends Controller
         return response(["data" => [
             "success" => 1,
             "message" => "Fetched all users",
-            "user" => $users
+            "users" => $users
         ]]);
 
     }
@@ -110,4 +110,6 @@ class UserController extends Controller
     {
         //
     }
+
+    
 }
