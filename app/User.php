@@ -47,6 +47,25 @@ class User extends Authenticatable
 
     public function contributions(){
         return $this->hasMany('App\Contribution', 'user_id');
+    } 
+
+    public function roles(){
+        return $this->belongsToMany('App\Role');
+    }
+
+    public function hasAnyRoles($roles){
+        if($this->roles()->whereIn('name', $roles)->first()){
+            return true;
+        }
+        return false;
+        
+    }
+    public function hasRole($role){
+        if($this->roles()->where('name', $role)->first()){
+            return true;
+        }
+        return false;
+        
     }
 
 }

@@ -7,10 +7,12 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name' , 'E-Chama')}}</title>
+    <title>{{ config('app.name' , 'M-Chama')}}</title>
 
     <!-- Scripts -->
+    
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/transact.js') }}" ></script>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -43,7 +45,7 @@
 
             <div class="row justify-content-center">
                 <div class="col-xl-9 d-flex align-items-center">
-                <h1 class="logo mr-auto"><a href="{{ route('home') }}">E-Chama</a></h1>
+                <h1 class="logo mr-auto"><a href="{{ route('home') }}">M-Chama</a></h1>
                 <!-- Uncomment below if you prefer to use an image logo -->
                 <!-- <a href="index.html" class="logo mr-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -66,9 +68,15 @@
                                 </li>
                             @endif
                         @else
+                          @can('access-admin')
+                          <li><a href="{{ route('admin.') }}">Admin Dashboard</a></li>
+                          @endcan
 
                             <li class="drop-down"><a href="">{{ Auth::user()->name }}</a>
                             <ul>
+                            <li><a href="#">Profile</a></li>
+                            <li><a href="#">History</a></li>
+                            <div class="dropdown-divider"></div>
                             <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -80,11 +88,9 @@
                                         @csrf
                                     </form>
                             </li>
-
-                            <li><a href="#">Profile</a></li>
-                            <li><a href="#">History</a></li>
                             </ul>
                         </li>  
+                        
                         @endguest
                     </ul>
                 </nav><!-- .nav-menu -->
@@ -128,24 +134,30 @@
         <div class="row">
 
           <div class="col-lg-4 col-md-6 footer-contact">
-            <h3>E-CHAMA</h3>
+            <h3>M-Chama</h3>
             <p>
               Ole Sangale Road<br>
               Nairobi City<br>
               Kenya <br><br>
               <strong>Phone:</strong> +254 710 112233<br>
-              <strong>Email:</strong> info@echama.co.ke<br>
+              <strong>Email:</strong> info@mchama.co.ke<br>
             </p>
           </div>
 
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Useful Links</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+              
+              @guest
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#">Register Account</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#">Login</a></li>
+              @else
+              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#">API Documentation</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+              @endguest
+            
+              
             </ul>
           </div>
 
@@ -167,7 +179,7 @@
       <div class="copyright-wrap d-md-flex py-4">
         <div class="mr-md-auto text-center text-md-left">
           <div class="copyright">
-            &copy; Copyright <strong><span>E-CHAMA</span></strong>. All Rights Reserved
+            &copy; Copyright <strong><span>M-Chama</span></strong>. All Rights Reserved
           </div>
           
         </div>
@@ -200,6 +212,7 @@
 
   <!-- Template Main JS File -->
   <script src="{{ asset('assets/js/main.js') }}"></script>
+  <script src="{{ asset('js/transact.js') }}" ></script>
 
 </body>
 </html>

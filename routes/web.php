@@ -22,9 +22,21 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+
 Route::get('/contact', function(){
     return view('welcome');
 })->name('contact');
+Route::get('payment/response', 'TransactionsController@processSTKPushRequestCallback');
+//Route::get('payment/status', 'TransactionsController@getSTKPushStatus');
 
-Route::resource('loans', 'LoansController');
-Route::resource('transactions', 'TransactionsController');
+Route::resource('/loans', 'LoansController', ['except' => ['create', 'store', 'destroy']]);
+Route::resource('/transactions', 'TransactionsController', ['except' => ['show', 'create', 'destroy']]);
+
+//Admin
+Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:access-admin')->group(function(){
+    Route::get('/dash', function(){
+        return view('admin.dash');
+    });
+    Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
+});

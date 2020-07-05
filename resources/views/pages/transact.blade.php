@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-7">
@@ -48,11 +49,17 @@
                                     <div class="col-md-7">
                                         <div class="form-group"><label class="small mb-1" for="inputAmount">Amount</label><input class="form-control" id="inputAmount" type="number" placeholder="Enter Amount" name="amount" required /></div>
                                     </div>
+                                    <!--
+                                    <input type="number" id="checkout-id" value="" ></input>
+                                    <textarea cols="100" rows="2" id="responseData" readonly></textarea>
+                                    -->
                                     
                                 </div>
                                 
                                 <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block my-4" type="submit">Send</button></div>
+                                
                             </form>
+                            
                         </div>
                         
                     </div>
