@@ -153,9 +153,11 @@
               <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#">Register Account</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#">Login</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{{ route('docs') }}">API Documentation</a></li>
               @else
               <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">API Documentation</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{{ route('docs') }}">API Documentation</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="{{ route('admin.dash') }}">Admin Dashboard</a></li>
               @endguest
             
               

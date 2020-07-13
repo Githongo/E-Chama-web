@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($loans as $loan)
+                @foreach ($loans ?? '' as $loan)
                     <tr>
                         <td>{{ $loan->user['name'] }}</td>
                         <td>{{ $loan->user['phone'] }}</td>

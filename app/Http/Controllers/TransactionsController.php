@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Transaction;
 use App\Loan;
 use App\User;
+use AfricasTalking\SDK\AfricasTalking;
 
 class TransactionsController extends Controller
 {
@@ -39,6 +40,7 @@ class TransactionsController extends Controller
             'phone' => ['required', 'numeric']
         ]);
 
+
             
             if($validatedData){
                 $transaction = new Transaction;
@@ -49,7 +51,7 @@ class TransactionsController extends Controller
 
                 $mpesa= new \Safaricom\Mpesa\Mpesa();
 
-                $callback_url = "https://8c92a58071e4.ngrok.io/payment/response";
+                $callback_url = "https://mchamatest.jeffreykingori.dev/payment/response";
                 $stkPushSimulation=$mpesa->STKPushSimulation(
                     '174379', //Bussiness Short Code
                     'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
@@ -64,7 +66,7 @@ class TransactionsController extends Controller
                     ''
                 );
 
-                
+                //echo $stkPushSimulation;
                 $resp = json_decode($stkPushSimulation, true);
                 $reqId = $resp['CheckoutRequestID'];
 
@@ -86,6 +88,8 @@ class TransactionsController extends Controller
                                 $prevBal = $loan->balance;
                                 $loan->balance = ($prevBal - request('amount'));
                                 $loan->save();
+                                $loanMsg = "Dear ".Auth::user()->name.", your Loan has been serviced by KSh.". strval(request('amount'))." your new Loan balance is KSh.". strval($loan->balance);
+                                $this->sendSms($request->phone, $loanMsg);
                             }
                             else{
                                 $request->session()->flash('trans_form_status', 'You do not have any active loans to service');
@@ -97,7 +101,9 @@ class TransactionsController extends Controller
                             $user = User::findOrFail(Auth::id()); 
                             $prevBal = $user->wallet;
                             $user->wallet = ($prevBal + request('amount'));
-                            $user->save(); 
+                            $user->save();
+                            $msg = "Dear ".$user->name.", KSh. ".strval(request('amount'))." has been credited to your M-Wallet. New M-Wallet balance is KSh. ".strval($user->wallet);
+                            $this->sendSms($request->phone, $msg);
                         }
                         
                     }
@@ -135,6 +141,41 @@ class TransactionsController extends Controller
     public function show($id)
     {
         //
+    }
+
+    public function  sendSms($phone, $message){
+
+        $username = "tetrasms";
+            $apiKey = "fc4189a9408886c4ea089277c3189b53db65baddd8050d6ea15d55be3985d186";
+
+            // Initialize the SDK
+            $AT = new AfricasTalking($username, $apiKey);
+
+            // Get the SMS service
+            $sms = $AT->sms();
+
+            // Set the numbers you want to send to in international format
+            
+            $recipient = "+" . $phone;
+
+
+            // Set your shortCode or senderId
+            $from       = "TetraConcpt";
+
+                try {
+                    // Thats it, hit send and we'll take care of the rest
+                    $result = $sms->send([
+                        'to'      => $recipient,
+                        'message' => $message,
+                        'from'    => $from
+                    ]);
+    
+                    //echo json_encode($result);
+                    echo json_encode($result);
+                    } catch (Exception $e) {
+                    echo "Error: ".$e->getMessage();
+                }
+
     }
 
     public function sendSTK($phone, $amount){   

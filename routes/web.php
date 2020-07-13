@@ -14,16 +14,20 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+//Welcome routes
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 Route::get('/contact', function(){
     return view('welcome');
 })->name('contact');
+Route::get('/docs', function(){
+    return view('pages.docs');
+})->name('docs');
 
 Auth::routes();
-//
 
+//user routes
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/rotationlist', 'HomeController@rotationList')->name('home.rotations');
 
@@ -31,13 +35,12 @@ Route::get('/rotationlist', 'HomeController@rotationList')->name('home.rotations
 
 
 Route::get('payment/response', 'TransactionsController@processSTKPushRequestCallback');
-//Route::get('payment/status', 'TransactionsController@getSTKPushStatus');
 
 Route::resource('/loans', 'LoansController', ['except' => ['create', 'show']]);
 Route::resource('/transactions', 'TransactionsController', ['except' => ['show', 'create', 'destroy']]);
 Route::post('/accounts/transfer', 'Admin\FinancesController@accountTransfer')->name('accounts.transfer')->middleware('can:manage-finances');
 
-//Admin
+//Admin routes
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:access-admin')->group(function(){
     Route::get('/dash', function(){
         return view('admin.dash');
