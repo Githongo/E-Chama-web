@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateContributionsTable extends Migration
+class CreateAccountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateContributionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('contributions', function (Blueprint $table) {
+        Schema::create('accounts', function (Blueprint $table) {
             $table->id();
+            $table->string('type');
             $table->string('description');
-            $table->integer('amount');
+            $table->integer('balance');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateContributionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('contributions');
+        Schema::dropIfExists('accounts');
     }
 }

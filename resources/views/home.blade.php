@@ -114,7 +114,7 @@
                     </div>
                     <div class="col-md-4 col-sm-4">
                         <div class="wrimagecard wrimagecard-topimage">
-                            <a href="#">
+                            <a href="{{ route ('home.rotations') }}">
                             <div class="wrimagecard-topimage_header" style="background-color:  rgba(213, 15, 37, 0.1)">
                                 <center><i class="fa fa-list" style="color:#d50f25"> </i></center>
                             </div>

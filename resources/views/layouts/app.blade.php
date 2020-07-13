@@ -26,6 +26,7 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Vendor CSS Files -->
+    <link href="{{ asset('assets/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/icofont/icofont.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
@@ -69,7 +70,7 @@
                             @endif
                         @else
                           @can('access-admin')
-                          <li><a href="{{ route('admin.') }}">Admin Dashboard</a></li>
+                          <li><a href="{{ route('admin.dash') }}">Admin Dashboard</a></li>
                           @endcan
 
                             <li class="drop-down"><a href="">{{ Auth::user()->name }}</a>

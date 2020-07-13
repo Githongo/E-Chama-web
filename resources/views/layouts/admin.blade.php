@@ -35,7 +35,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.') }}">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dash') }}">
         <div class="sidebar-brand-icon rotate-n-5">
           <i class="fas fa-user-shield"></i>
         </div>
@@ -47,14 +47,14 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="{{ route('admin.') }}">
+        <a class="nav-link" href="{{ route('admin.dash') }}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider">
-
+      @can('manage-users')
       <!-- Heading -->
       <div class="sidebar-heading">
         Users
@@ -78,6 +78,7 @@
       
       <!-- Divider -->
       <hr class="sidebar-divider">
+      @endcan
       <!-- visible to treasurer only -->
       @can('manage-finances')
       <!-- Heading -->
@@ -94,8 +95,8 @@
         <div id="collapseLoans" class="collapse" aria-labelledby="headingLoans" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Manage Loans:</h6>
-            <a class="collapse-item" href="#">Approve requests</a>
-            <a class="collapse-item" href="#">All loans</a>
+            <a class="collapse-item" href="{{ route('admin.loans.requests') }}">Approve requests</a>
+            <a class="collapse-item" href="{{ route('admin.loans.all') }}">All loans</a>
           </div>
         </div>
       </li>
@@ -104,15 +105,16 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseContributions" aria-expanded="true" aria-controls="collapseContributions">
           <i class="fas fa-fw fa-coins"></i>
-          <span>Contributions</span>
+          <span>Accounts</span>
         </a>
         <div id="collapseContributions" class="collapse" aria-labelledby="headingContributions" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Manage Accounts:</h6>
+            <a class="collapse-item" href="{{ route('admin.accounts.all') }}">All Accounts</a>
+            <a class="collapse-item" href="#">Account actions</a>
             <h6 class="collapse-header">Manage Contributions:</h6>
-            <a class="collapse-item" href="#">All Contributions</a>
-            <a class="collapse-item" href="#">Get contributions</a>
-            <h6 class="collapse-header">Manage Transactions:</h6>
-            <a class="collapse-item" href="#">Get Transactions</a>
+            <a class="collapse-item" href="{{ route('admin.contributions.all') }}">Get Contributions</a>
+            <a class="collapse-item" href="#">Contribution History</a>
           </div>
         </div>
       </li>
@@ -125,10 +127,16 @@
       </div>
       <!-- Nav Item - Messages -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{ route('admin.sms.new') }}">
           <i class="fas fa-fw fa-sms"></i>
           <span>Send Message</span></a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.notices.new') }}">
+          <i class="fas fa-fw fa-list"></i>
+          <span>Post Notice</span></a>
+      </li>
+
       <hr class="sidebar-divider d-none d-md-block">
 
       <!-- Nav Item - Home -->

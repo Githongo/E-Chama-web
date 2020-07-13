@@ -34,7 +34,7 @@
                             <form method="POST" action="{{ route('admin.users.update', $user) }}">
                                 @csrf
                                 {{ method_field('PUT') }}
-                                <center><img src="{{ asset('assets/img/default_profile.png') }}" alt="mpesa-logo"></img></center>
+                                <center><img src="{{ asset('assets/img/default_profile.png') }}" alt="default profile"></img></center>
                                 <label class="small mb-1" for="check-role">Role</label> 
                                 @foreach ($roles as $role)
                                     <div class="form-check" id="check-role">

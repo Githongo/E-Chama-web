@@ -21,8 +21,6 @@ class TransactionsController extends Controller
      */
     public function index()
     {
-        //$this->sendSTK();
-        //$this->getSTKPushStatus();
         return view('pages.transact');
     }
 
@@ -48,53 +46,79 @@ class TransactionsController extends Controller
                 $transaction->type = request('type');
                 $transaction->amount = request('amount');
                 $transaction->status = "Requested"; 
-                
-                if($this->sendSTK()){
+
+                $mpesa= new \Safaricom\Mpesa\Mpesa();
+
+                $callback_url = "https://8c92a58071e4.ngrok.io/payment/response";
+                $stkPushSimulation=$mpesa->STKPushSimulation(
+                    '174379', //Bussiness Short Code
+                    'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
+                    'CustomerPayBillOnline',// Transaction Type
+                    '1', 
+                    $request->phone, //Party A - phone of the customer
+                    '174379', //Party B - same as Business Short Code
+                    $request->phone, //Phone number
+                    $callback_url,
+                    'E-chama',
+                    'test',
+                    ''
+                );
 
                 
-                    if(request('type') == '1'){
-                        if(Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->exists()){
-                            $loan = Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->first();
-                            /*foreach ($loans as $loan) {
+                $resp = json_decode($stkPushSimulation, true);
+                $reqId = $resp['CheckoutRequestID'];
+
+                session(['reqID' => $reqId]);
+
+                //echo $reqId;
+
+                if($stkPushSimulation){
+                    if($this->confirmPayment()){
+                        //echo "Hello mamammuuuii";
+                        if(request('type') == '1'){
+                            if(Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->exists()){
+                                $loan = Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->first();
+                                /*foreach ($loans as $loan) {
+                                    $prevBal = $loan->balance;
+                                    $loan->balance = ($prevBal - request('amount'));
+                                    $loan->save();
+                                }*/
                                 $prevBal = $loan->balance;
                                 $loan->balance = ($prevBal - request('amount'));
                                 $loan->save();
-                            }*/
-                            $prevBal = $loan->balance;
-                            $loan->balance = ($prevBal - request('amount'));
-                            $loan->save();
+                            }
+                            else{
+                                $request->session()->flash('trans_form_status', 'You do not have any active loans to service');
+                                return view('pages.transact');
+                            }
+                                
                         }
-                        else{
-                            $request->session()->flash('trans_form_status', 'You do not have any active loans to service');
-                            return view('pages.transact');
+                        elseif(request('type') == '2'){
+                            $user = User::findOrFail(Auth::id()); 
+                            $prevBal = $user->wallet;
+                            $user->wallet = ($prevBal + request('amount'));
+                            $user->save(); 
                         }
-                            
+                        
                     }
-                    elseif(request('type') == '2'){
-                        $user = User::findOrFail(Auth::id()); 
-                        $prevBal = $user->wallet;
-                        $user->wallet = ($prevBal + request('amount'));
-                        $user->save(); 
+                    else{
+                        //echo "Wrong bark dooogg";
+                        return view('pages.transact');
+                        
                     }
-                }
-                else{
-                    return view('pages.transaact');
                 }
            
             }
             else{
                 $request->session()->flash('trans_form_status', 'Please input the data as per the rules');
                 return view('pages.transact');
-            }
-    
-           
-    
+            } 
     
             if($transaction->save()){
-                $request->session()->flash('trans_form_status', 'Transaction completed successfully :)');
+                $request->session()->flash('trans_form_status', 'Payment recieved. Transaction completed successfully :)');
                 return view('pages.transact');
             }else{
-                $request->session()->flash('trans_form_status', 'Transaction failed...please try again');
+                $request->session()->flash('trans_form_status', 'Payment recieved but Transaction failed...please contact treasurer');
                 return view('pages.transact');
             }
             
@@ -113,7 +137,7 @@ class TransactionsController extends Controller
         //
     }
 
-    public function sendSTK(){   
+    public function sendSTK($phone, $amount){   
 
         $mpesa= new \Safaricom\Mpesa\Mpesa();
 
@@ -123,9 +147,9 @@ class TransactionsController extends Controller
             'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
             'CustomerPayBillOnline',// Transaction Type
             '1', 
-            '254710113242', //Party A - phone of the customer
+            $phone, //Party A - phone of the customer
             '174379', //Party B - same as Business Short Code
-            '254710113242', //Phone number
+            $phone, //Phone number
             $callback_url,
             'E-chama',
             'test',
@@ -141,32 +165,45 @@ class TransactionsController extends Controller
         //echo $reqId;
 
         if($stkPushSimulation){
-            $transResponse = json_decode($this->getSTKPushStatus());
-            //echo $transResponse->ResultDesc; 
-            if(1 != 1){
-                //do nothing
-            }
-            elseif($transResponse->ResultCode == 0){
-                echo "Payment successful";
+            if($this->confirmPayment()){
                 return true;
             }
-            elseif($transResponse->ResultCode == 1032){
-                echo "Mpesa Transaction cancelled by user";
-                $request->session()->flash('trans_form_status', 'Failed! Transaction cancelled by user');
+            else{
                 return false;
             }
-            elseif($transResponse->errorCode == "500.001.1001"){
-                echo "Your request is being processed";
-                $this->sendSTK();       
+        }
+             
+
+    }
+
+    public function confirmPayment(){
+        $transResponse = json_decode($this->getSTKPushStatus());
+        global $success;   
+            if(property_exists($transResponse, 'errorCode')){
+                //echo $transResponse->errorMessage;
+                sleep(1);
+                $this->confirmPayment(); 
             }
             else{
-                $request->session()->flash('trans_form_status', 'Something went wrong, please try again later');
-                return false;  
+                if($transResponse->ResultCode == 0){
+                    //echo $transResponse->ResultDesc;
+                    session()->flash('trans_form_status', 'Success! Your Payment has been recieved...');
+                    $success = true;
+                }
+                elseif($transResponse->ResultCode == 1032){
+                    //echo $transResponse->ResultDesc;
+                    session()->flash('trans_form_status', 'Failed! Transaction cancelled by user');
+                    $success = false;
+                
+                }
+                else{
+                    session()->flash('trans_form_status', 'Something went wrong, please try again...');
+                    $success = false;
+     
+                }
             }
 
-        }
-        
-
+            return $success;
     }
 
     public function getSTKPushStatus(){
@@ -212,9 +249,7 @@ class TransactionsController extends Controller
         else{
             $request->session()->flash('trans_form_status', 'Transaction not completed');
             return view('pages.transact');
-        }
-
-        
+        }     
         
     }*/
 

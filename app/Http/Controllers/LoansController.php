@@ -108,9 +108,13 @@ class LoansController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Loan $loan)
     {
-        //
+        $loan->status = "Active";
+        if($loan->save()){
+            return view('admin.loanreq');
+        }
+
     }
 
     /**
@@ -119,8 +123,9 @@ class LoansController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Loan $loan)
     {
-        //
+        $loan->delete();
+        $redirect()->route('admin.loans.requests');
     }
 }

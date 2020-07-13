@@ -29,11 +29,11 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes();
 
         Passport::personalAccessClientId(
-            config('passport.personal_access_client.id', '1')
+            config('passport.personal_access_client.id')
         );
     
         Passport::personalAccessClientSecret(
-            config('passport.personal_access_client.secret', '9LVI4HyiG6VdIvgCOAfRlTB08n7pvbExoYsMEJf2')
+            config('passport.personal_access_client.secret')
         );
 
 

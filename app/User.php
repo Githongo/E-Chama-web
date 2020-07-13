@@ -47,7 +47,11 @@ class User extends Authenticatable
 
     public function contributions(){
         return $this->hasMany('App\Contribution', 'user_id');
-    } 
+    }
+
+    public function loans(){
+        return $this->hasMany('App\Loan', 'user_id');
+    }
 
     public function roles(){
         return $this->belongsToMany('App\Role');
