@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });*/
 
+
+
 //user
 Route::prefix('/user')->group( function(){
     Route::post('oauth', 'Api\v1\AuthenticationController@authenticate');

@@ -4,8 +4,60 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e02c09b3a666baaef254a169b105a6d",
+    "content-hash": "583cbc8255fa287a32eb3194995f0a93",
     "packages": [
+        {
+            "name": "africastalking/africastalking",
+            "version": "v2.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/AfricasTalkingLtd/africastalking-php.git",
+                "reference": "f14094a1e1677ae36bac1a2203083f6eb981aa90"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/AfricasTalkingLtd/africastalking-php/zipball/f14094a1e1677ae36bac1a2203083f6eb981aa90",
+                "reference": "f14094a1e1677ae36bac1a2203083f6eb981aa90",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.2",
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AfricasTalking\\SDK\\": "src/",
+                    "AfricasTalking\\SDK\\Tests\\": "tests"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Africas's Talking",
+                    "email": "support@africastalking.com",
+                    "homepage": "https://www.africastalking.com"
+                }
+            ],
+            "description": "Official Africa's Talking PHP SDK",
+            "homepage": "http://github.com/AfricasTalkingLtd/africastalking-php",
+            "keywords": [
+                "Africastalking",
+                "airtime",
+                "api",
+                "sms",
+                "text message",
+                "ussd",
+                "voice"
+            ],
+            "time": "2020-07-08T14:54:11+00:00"
+        },
         {
             "name": "asm89/stack-cors",
             "version": "1.3.0",
@@ -5475,16 +5527,16 @@
         },
         {
             "name": "facade/ignition",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/facade/ignition.git",
-                "reference": "8b455361dc1e619253a5b5212e37ace32cb27e71"
+                "reference": "db6bd05163ee0a050f6f27e2139fe5e404f50aea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/facade/ignition/zipball/8b455361dc1e619253a5b5212e37ace32cb27e71",
-                "reference": "8b455361dc1e619253a5b5212e37ace32cb27e71",
+                "url": "https://api.github.com/repos/facade/ignition/zipball/db6bd05163ee0a050f6f27e2139fe5e404f50aea",
+                "reference": "db6bd05163ee0a050f6f27e2139fe5e404f50aea",
                 "shasum": ""
             },
             "require": {
@@ -5542,7 +5594,7 @@
                 "laravel",
                 "page"
             ],
-            "time": "2020-07-13T15:28:28+00:00"
+            "time": "2020-07-13T21:03:23+00:00"
         },
         {
             "name": "facade/ignition-contracts",

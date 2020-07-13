@@ -97,65 +97,6 @@ class ApiController extends Controller
             'phone' => ['required', 'numeric']
         ]);
 
-            /*Validate request Data
-            if($validatedData){
-                $transaction = new Transaction;
-                $transaction->user_id = Auth::id();
-                $transaction->type = request('type');
-                $transaction->amount = request('amount');
-                $transaction->status = "Requested"; 
-                
-                //Update Wallet/Laon Balance
-                if(request('type') == '1'){
-                    //Check for active Loan to update balance
-                    if(Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->exists()){
-                        $loan = Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->first();
-                        $prevBal = $loan->balance;
-                        $loan->balance = ($prevBal - request('amount'));
-                        $loan->save();
-                    }
-                    else{
-                        return response(["data" => [
-                            "success" => 0,
-                            "submitted" => false,
-                            "message" => "You have no active loans to service"
-                        ]]);
-                    }
-                           
-                }
-                elseif(request('type') == '2'){
-                    $user = User::findOrFail(request('user_id')); 
-                    $prevBal = $user->wallet;
-                    $user->wallet = ($prevBal + request('amount'));
-                    $user->save(); 
-                }
-           
-            }
-            else{
-                
-                return response(["data" => [
-                    "success" => 0,
-                    "submitted" => false,
-                    "message" => "Input validation failed"
-                ]]);
-            }
-    
-            //JSON ResponseFeedback
-            if($transaction->save()){    
-                return response(["data" => [
-                    "success" => 1,
-                    "submitted" => true,
-                    "message" => "Request Successful, check your phone for STK Push notification"
-                ]]);
-            }else{
-                return response(["data" => [
-                    "success" => 0,
-                    "submitted" => false,
-                    "message" => "Transaction failed, please try agaoin later"
-                ]]);
-            }
-            */
-
 
             //New
 
@@ -203,6 +144,8 @@ class ApiController extends Controller
                                 $prevBal = $loan->balance;
                                 $loan->balance = ($prevBal - request('amount'));
                                 $loan->save();
+                                $loanMsg = "Dear ".Auth::user()->name.", your Loan has been serviced by KSh.". strval(request('amount'))." your new Loan balance is KSh.". strval($loan->balance);
+                                $this->sendSms($request->phone, $loanMsg);
                             }
                             else{
                                 return response(["data" => [
@@ -218,6 +161,8 @@ class ApiController extends Controller
                             $prevBal = $user->wallet;
                             $user->wallet = ($prevBal + request('amount'));
                             $user->save(); 
+                            $msg = "Dear ".$user->name.", KSh. ".strval(request('amount'))." has been credited to your M-Wallet. New M-Wallet balance is KSh. ".strval($user->wallet);
+                            $this->sendSms($request->phone, $msg);
                         }
                         
                     }
@@ -293,6 +238,41 @@ class ApiController extends Controller
         $mpesa = new \Safaricom\Mpesa\Mpesa();
         $STKPushRequestStatus=$mpesa->STKPushQuery(session('ApireqID'));
         return $STKPushRequestStatus;
+    }
+
+    public function  sendSms($phone, $message){
+
+        $username = "tetrasms";
+            $apiKey = "fc4189a9408886c4ea089277c3189b53db65baddd8050d6ea15d55be3985d186";
+
+            // Initialize the SDK
+            $AT = new AfricasTalking($username, $apiKey);
+
+            // Get the SMS service
+            $sms = $AT->sms();
+
+            // Set the numbers you want to send to in international format
+            
+            $recipient = "+" . $phone;
+
+
+            // Set your shortCode or senderId
+            $from       = "TetraConcpt";
+
+                try {
+                    // Thats it, hit send and we'll take care of the rest
+                    $result = $sms->send([
+                        'to'      => $recipient,
+                        'message' => $message,
+                        'from'    => $from
+                    ]);
+    
+                    //echo json_encode($result);
+                    //echo json_encode($result);
+                    } catch (Exception $e) {
+                    echo json_encode(["Error" => $e->getMessage()]);
+                }
+
     }
 
 }
