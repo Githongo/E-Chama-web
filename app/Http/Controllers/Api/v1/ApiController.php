@@ -9,6 +9,7 @@ use App\Http\Resources\User as UserResource;
 use App\Loan;
 use App\Transaction;
 use App\User;
+use AfricasTalking\SDK\AfricasTalking;
 
 class ApiController extends Controller
 {
@@ -268,7 +269,7 @@ class ApiController extends Controller
                     ]);
     
                     //echo json_encode($result);
-                    //echo json_encode($result);
+                   
                     } catch (Exception $e) {
                     echo json_encode(["Error" => $e->getMessage()]);
                 }

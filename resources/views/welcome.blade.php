@@ -206,22 +206,22 @@
             <div class="icon-box mt-5 mt-lg-0" data-aos="fade-up" data-aos-delay="100">
               <i class="bx bx-shield"></i>
               <h4>Easy and Secure Digital transactions</h4>
-              <p>Consequuntur sunt aut quasi enim aliquam quae harum pariatur laboris nisi ut aliquip</p>
+              <p>Easy, fast and secure transactions powered M-Pesa<sup>TM</sup>.</p>
             </div>
             <div class="icon-box mt-5" data-aos="fade-up" data-aos-delay="200">
               <i class="bx bx-user-circle "></i>
               <h4>Account Control</h4>
-              <p>Make transactions and access reports and transaction history easily from your mobile phone.</p>
+              <p>Make transactions and access reports and transaction <br>history easily from your mobile phone.</p>
             </div>
             <div class="icon-box mt-5" data-aos="fade-up" data-aos-delay="300">
               <i class="bx bx-money"></i>
               <h4>Manage contributions</h4>
-              <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p>
+              <p>Manage what you contribute through our web or mobile <br> clients.</p>
             </div>
             <div class="icon-box mt-5" data-aos="fade-up" data-aos-delay="400">
               <i class="bx bx-dollar-circle"></i>
               <h4>Get loans easily</h4>
-              <p>Expedita veritatis consequuntur nihil tempore laudantium vitae denat pacta</p>
+              <p>Get loans quickly with the easy application and grant process.</p>
             </div>
           </div>
           <div class="image col-lg-6 order-1 order-lg-2 " data-aos="zoom-in" data-aos-delay="100">

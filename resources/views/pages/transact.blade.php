@@ -59,14 +59,13 @@
                                 <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block my-4" type="submit">Send</button></div>
                                 
                             </form>
-                            
+ 
                         </div>
                         
                     </div>
                 </div>
             </div>
         </div>
-
-
+        
 
 @endsection

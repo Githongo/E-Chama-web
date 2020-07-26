@@ -17,7 +17,22 @@
                     
                     </div>
                     <div class="card-body">
-                        <form method="POST" enctype="multipart/form-data" action="#">
+                                 @if (Session::has('sms_form_status'))
+                                    <div class="alert alert-info" role="alert">
+                                        {{ session('sms_form_status')  }}
+                                    </div> 
+                                @endif
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                        <form method="POST" enctype="multipart/form-data" action="{{ route('admin.sms.send') }} ">
+                        @csrf
                             <div>
                             <h7 class="m-0 text-info">Recipients:</h7>
                             </div>
@@ -26,26 +41,9 @@
                                     <div class="col-xl-3">
                                         <i class="fas fa-user"></i>
                                         <label for="contact">Single Contact</label>
-                                        <input type="text" id="singleContact" name="singleContact" class="form-control" maxlength="10" placeholder="e.g 0712345678">
+                                        <input type="text" id="singleContact" name="singleContact" class="form-control" maxlength="12" placeholder="e.g 254712345678">
                                     </div>
-                                    <div class="col-xl-6">
-
-                                        <div class="my-2"></div>
-                                        <a href="#" class="btn btn-primary btn-icon-split btn-sm">
-                                            <span class="icon text-white-50">
-                                            <i class="fas fa-share-square"></i>
-                                            </span>
-                                            <span class="text">Send to all contacts</span>
-                                        </a>
-                                        <div class="my-2"></div>
-                                        <a href="#" class="btn btn-primary btn-icon-split btn-sm">
-                                            <span class="icon text-white-50">
-                                            <i class="fas fa-users"></i>
-                                            </span>
-                                            <span class="text">Send to a group</span>
-                                        </a>
-                                        <label>No Groups Selected</label>
-                                    </div>
+                                    
                                 
                             </div>
                             <div>
@@ -66,6 +64,17 @@
                                             </span>
                                             <span class="text">Send</span>
                                     </a>
+                                </div>
+                                <div class="col-xl-6">
+
+                                        <div class="my-2"></div>
+                                        <a href="#" class="btn btn-primary btn-icon-split btn-sm disabled">
+                                            <span class="icon text-white-50">
+                                            <i class="fas fa-share-square"></i>
+                                            </span>
+                                            <span class="text">Send to all contacts</span>
+                                        </a>
+                                        <div class="my-2"></div>
                                 </div>
                             </div>
                         </form>

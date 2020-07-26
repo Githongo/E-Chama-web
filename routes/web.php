@@ -51,5 +51,6 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:acce
     Route::get('/accounts/all', 'FinancesController@accounts')->name('accounts.all');
     Route::get('/contributions/new', 'FinancesController@newContributions')->name('contributions.all');
     Route::get('/sms/new', 'CommunicationsController@newSms')->name('sms.new');
+    Route::post('/sms/send', 'CommunicationsController@sendSingle')->name('sms.send');
     Route::get('/notices/new', 'CommunicationsController@newNotice')->name('notices.new');
 });
