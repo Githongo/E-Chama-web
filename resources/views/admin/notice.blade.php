@@ -41,7 +41,7 @@
                                 <div class="col-xl-8">
                                     <div class="md-form">
                                     <i class="fas fa-pencil-alt prefix"></i>
-                                    <textarea id="form22" name="message" class="md-textarea form-control" rows="5" style="border: 1px solid #186dd6" placeholder="Type notice here..."></textarea>
+                                    <textarea name="message" class="md-textarea form-control" rows="5" style="border: 1px solid #186dd6" placeholder="Type notice here..."></textarea>
                                     </div>
                                 </div>
                                 <div class="col-xl-4">

@@ -35,8 +35,8 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Loans</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">215,000<sup>KES</sup></div>
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Borrowed</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $loanTotal }} <sup>KES</sup></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -48,24 +48,15 @@
 
             <!-- Earnings (Monthly) Card Example -->
             <div class="col-xl-3 col-md-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
+              <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
-                      <div class="row no-gutters align-items-center">
-                        <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                        </div>
-                        <div class="col">
-                          <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                          </div>
-                        </div>
-                      </div>
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Interest</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $interestTotal }} <sup>KES</sup></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                      <i class="fas fa-funnel-dollar fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -79,10 +70,10 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Loan Requests</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"> {{ $requestCount }}</div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -100,21 +91,31 @@
                 <th scope="col">Name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Phone</th>
-                <th scope="col">Role</th>
+                <th scope="col">Roles</th>
                 <th scope="col">Rotation</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Otto</td>
-                <td>Otto</td>
-              
-                </tr>
-              
+                @foreach ($users as $user)
+                    <tr>
+                        <th>{{ $user->id }}</th>
+                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->phone }}</td>
+                        <td>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray())  }}</td>
+                        <td>
+                            @if($user->rotation == true)
+                                <a href="#" class="btn btn-success btn-circle btn-sm"><i class="fas fa-check"></i></a>
+                            @elseif($user->roatation == false)
+                                <a href="#" class="btn btn-secondary btn-circle btn-sm"><i class="fas fa-times"></i></a>
+                            @else
+                                <a href="#" class="btn btn-secondary btn-circle btn-sm"><i class="fas fa-times"></i></a>
+                            @endif
+                        
+                        </td>
+                    </tr>
+                     
+                @endforeach
             </tbody>
             </table>
 

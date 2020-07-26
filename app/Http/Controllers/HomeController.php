@@ -26,6 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         $notices = Notice::all();
+        
         return view('home')->with(['title' => 'Home', 'notices' => $notices]);
     }
 

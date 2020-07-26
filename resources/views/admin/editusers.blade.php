@@ -44,7 +44,12 @@
                                     </div>
                                     
                                 @endforeach
-                                <div class="form-group"><label class="small mb-1" for="inputPhone">Mpesa Phone</label><input class="form-control" id="inputPhone" type="text" placeholder="e.g. 254722000000" name="phone"/></div>
+                                <label class="small mb-1" for="inputRotation">Rotaion Turn</label>
+                                <div class="form-check" id="inputRotation">
+                                        <div class="py-1"></div>
+                                        <input type="radio" name="rotation" value=1 @if ($user->rotation == true) checked @endif> On Rotation</input><br>
+                                        <input type="radio" name="rotation" value=0 @if ($user->rotation == false) checked @endif> Off Rotation</input>
+                                </div>
             
                                 
                                 <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block my-4" type="submit">SAVE</button></div>

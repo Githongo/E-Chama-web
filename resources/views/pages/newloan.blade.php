@@ -32,7 +32,7 @@
                                 @csrf
                                 <div class="form-row">
                                     <div class="col-md-6">
-                                        <div class="form-group"><label class="small mb-1" for="inputGrantDate">Preferred Grant Date</label><input class="form-control" id="inputGrantDate" type="date" name="grant_date" required/></div>
+                                        <div class="form-group"><label class="small mb-1" for="inputGrantDate">Preferred Fund Date</label><input class="form-control" id="inputGrantDate" type="date" name="grant_date" required/></div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group"><label class="small mb-1" for="inputRepaymentDate">Preferred Repayment Start Date</label><input class="form-control" id="inputRepaymentDate" type="date" name="repayment_date" required/></div>

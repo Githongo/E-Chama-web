@@ -32,7 +32,16 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->phone }}</td>
                         <td>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray())  }}</td>
-                        <td><a href="#" class="btn btn-success btn-circle btn-sm"><i class="fas fa-check"></i></a></td>
+                        <td>
+                            @if($user->rotation == true)
+                                <a href="#" class="btn btn-success btn-circle btn-sm"><i class="fas fa-check"></i></a>
+                            @elseif($user->roatation == false)
+                                <a href="#" class="btn btn-secondary btn-circle btn-sm"><i class="fas fa-times"></i></a>
+                            @else
+                                <a href="#" class="btn btn-secondary btn-circle btn-sm"><i class="fas fa-times"></i></a>
+                            @endif
+                        
+                        </td>
                         <td>
                             <a href="{{ route('admin.users.edit', $user->id ) }}" class="btn btn-warning btn-circle btn-sm float-left mr-2"><i class="fas fa-edit"></i></a>
                             <form action="{{ route('admin.users.destroy', $user) }}" method="POST" class="float-left">

@@ -29,7 +29,15 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->phone }}</td>
                         <td>{{ implode(', ', $user->roles()->get()->pluck('name')->toArray())  }}</td>
-                        <td><a href="#" class="btn btn-success btn-circle btn-sm"><i class="fas fa-check"></i></a></td>
+                        <td>
+                            @if($user->rotation == true)
+                                <a href="#" class="btn btn-success btn-circle btn-sm"><i class="fas fa-check"></i></a>
+                            @elseif($user->roatation == false)
+                                <a href="#" class="btn btn-secondary btn-circle btn-sm"><i class="fas fa-times"></i></a>
+                            @else
+                                <a href="#" class="btn btn-secondary btn-circle btn-sm"><i class="fas fa-times"></i></a>
+                            @endif
+                        </td>
                         
                     </tr>
                      

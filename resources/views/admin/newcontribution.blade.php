@@ -39,9 +39,8 @@
                                 
                             <form method="POST" action="{{ route('accounts.transfer') }}">
                                 @csrf
-                                <div class="form-group"><label class="small mb-1" for="inputDesc">Description</label><input class="form-control" id="inputDesc" type="text" placeholder="Enter Short Description" name="description" required/></div>
+                                <textarea name="description" class="md-textarea form-control" rows="2" placeholder="Type a short description" required ></textarea>
                                 <div class="form-group"><label class="small mb-1" for="inputAmount">Amount</label><input class="form-control" id="inputAmount" type="number" placeholder="Enter Amount" name="amount" required/></div>
-                                
                                 <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block my-4" type="submit">Transfer</button></div>
                                 
                             </form>

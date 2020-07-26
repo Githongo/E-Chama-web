@@ -42,9 +42,7 @@ Route::post('/accounts/transfer', 'Admin\FinancesController@accountTransfer')->n
 
 //Admin routes
 Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:access-admin')->group(function(){
-    Route::get('/dash', function(){
-        return view('admin.dash');
-    })->name('dash');
+    Route::get('/dash', 'AdminController@index')->name('dash');
     Route::resource('/users', 'UsersController', ['except' => ['show', 'create', 'store']]);
     Route::get('/loans/all', 'FinancesController@allLoans')->name('loans.all');
     Route::get('/loans/requests', 'FinancesController@loanRequests')->name('loans.requests');
