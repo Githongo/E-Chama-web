@@ -17,7 +17,7 @@
                     
                     </div>
                     <div class="card-body">
-                                 @if (Session::has('sms_form_status'))
+                                @if (Session::has('sms_form_status'))
                                     <div class="alert alert-info" role="alert">
                                         {{ session('sms_form_status')  }}
                                     </div> 

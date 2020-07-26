@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Notice;
 
 class HomeController extends Controller
 {
@@ -24,7 +25,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home')->with('title', 'Home');
+        $notices = Notice::all();
+        return view('home')->with(['title' => 'Home', 'notices' => $notices]);
     }
 
     public function rotationList(){

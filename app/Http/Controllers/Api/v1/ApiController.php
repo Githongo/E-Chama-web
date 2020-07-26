@@ -270,7 +270,7 @@ class ApiController extends Controller
     
                     //echo json_encode($result);
                    
-                    } catch (Exception $e) {
+                    } catch (\Exception $e) {
                     echo json_encode(["Error" => $e->getMessage()]);
                 }
 

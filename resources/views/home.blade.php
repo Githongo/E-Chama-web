@@ -129,9 +129,7 @@
                         </div>
                         <div class="col-md-4 col-sm-4">
                         <div class="wrimagecard wrimagecard-topimage">
-                            <a href="#" 
-                                onclick=" //modal content setting js 
-                                var content = document.getElementById('modal_content').innerHTML='Nothing to see here';" data-toggle="modal" data-target="#noticesModal">
+                            <a href="#"  data-toggle="modal" data-target="#noticesModal">
                             <div class="wrimagecard-topimage_header" style="background-color:  rgba(51, 105, 232, 0.1)">
                                 <center><i class="fa fa-info" style="color:#3369e8"></i></center>
                             </div>
@@ -184,20 +182,25 @@
 
 
     <!-- The Modal -->
-    <div class="modal " id="noticesModal" data-keyboard="false">
+    <div class="modal" id="noticesModal" data-keyboard="false">
     <div class="modal-dialog">
         <div class="modal-content">
 
         <!-- Modal Header -->
         <div class="modal-header">
             <h4 class="modal-title">Notices</h4>
-            <button onclick="location.reload()" type="button" class="close" data-dismiss="modal">&times;</button>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <!-- Modal body -->
         <div class="modal-body" id="modal_body">
-        
-            <p id="modal_content"></p>
+        <p id="modal_content">
+        <ol>
+            @foreach ($notices as $notice)
+                    <li> {{ $notice->message }} </li>                  
+            @endforeach
+        </ol>
+        <p>
         </div>
     </div>
     </div>

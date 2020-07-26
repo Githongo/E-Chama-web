@@ -53,4 +53,5 @@ Route::namespace('Admin')->prefix('admin')->name('admin.')->middleware('can:acce
     Route::get('/sms/new', 'CommunicationsController@newSms')->name('sms.new');
     Route::post('/sms/send', 'CommunicationsController@sendSingle')->name('sms.send');
     Route::get('/notices/new', 'CommunicationsController@newNotice')->name('notices.new');
+    Route::post('/notices/post', 'CommunicationsController@postNotice')->name('notices.post');
 });

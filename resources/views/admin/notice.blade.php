@@ -17,7 +17,22 @@
                     
                     </div>
                     <div class="card-body">
-                        <form method="POST" enctype="multipart/form-data" action="#">
+                                @if (Session::has('notice_form_status'))
+                                    <div class="alert alert-info" role="alert">
+                                        {{ session('notice_form_status')  }}
+                                    </div> 
+                                @endif
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                        <form method="POST" enctype="multipart/form-data" action="{{ route('admin.notices.post') }}">
+                        @csrf
                         
                             <div>
                             <h7 class="m-0 text-info">Annnouncement</h7>
@@ -32,10 +47,10 @@
                                 <div class="col-xl-4">
                                 <div class="my-2"></div>
                                     <a href="javascript:$('form').submit();" name="send" class="btn btn-primary btn-icon-split btn-sm">
-                                            <span class="icon text-white-50">
-                                            <i class="fas fa-paper-plane"></i>
-                                            </span>
-                                            <span class="text">Post</span>
+                                        <span class="icon text-white-50">
+                                        <i class="fas fa-paper-plane"></i>
+                                        </span>
+                                        <span class="text">Post</span>
                                     </a>
                                 </div>
                             </div>

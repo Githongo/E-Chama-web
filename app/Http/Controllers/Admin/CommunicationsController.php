@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use AfricasTalking\SDK\AfricasTalking;
+use App\Notice;
 
 class CommunicationsController extends Controller
 {
@@ -42,7 +43,7 @@ class CommunicationsController extends Controller
     public function  sendSms($phone, $message){
 
         $username = "tetrasms";
-            $apiKey = "fc4189a9408886c4ea089277c3189b53db65baddd8050d6ea15d55be3985d186";
+        $apiKey = "fc4189a9408886c4ea089277c3189b53db65baddd8050d6ea15d55be3985d186";
 
             // Initialize the SDK
             $AT = new AfricasTalking($username, $apiKey);
@@ -68,10 +69,35 @@ class CommunicationsController extends Controller
     
                     //echo json_encode($result);
                     return json_encode($result);
-                    } catch (Exception $e) {
+                    } 
+                    catch (\Exception $e) {
                     echo "Error: ".$e->getMessage();
                 }
 
+    }
+
+    public function postNotice(Request $request){
+        $validatedData = $request->validate([
+            'message' => ['required', 'max:254', 'string']
+        ]);
+        if($validatedData){
+            $notice = new Notice;
+            $notice->message = request('message');
+            if($notice->save()){
+                $request->session()->flash('notice_form_status', 'Announcement has been posted successfully!');
+                return view('admin.notice');
+            }
+            else{
+                $request->session()->flash('notice_form_status', 'Announcement posting failed! Try again later...');
+                return view('admin.notice');
+            }
+
+            
+        }
+        else{
+            $request->session()->flash('notice_form_status', 'Invalid Form data! plesae try again...');
+            return view('admin.notice');
+        }
     }
 
 
