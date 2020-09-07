@@ -171,7 +171,7 @@ class TransactionsController extends Controller
                     ]);
     
                     //echo json_encode($result);
-                    echo json_encode($result);
+                    //echo json_encode($result);
                     } catch (Exception $e) {
                     echo "Error: ".$e->getMessage();
                 }
