@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Notice;
+use App\Transaction;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -47,7 +49,7 @@ class HomeController extends Controller
             'phone' => ['required', 'max:12', 'min:12'],
         ]);
 
-        $updateUser = User::find(1);
+        $updateUser = User::find(Auth::id());
         $updateUser->name = $data['name'];
         $updateUser->email = $data['email'];
         $updateUser->phone = $data['phone'];
@@ -60,6 +62,14 @@ class HomeController extends Controller
             $request->session()->flash('profile_form_status', 'Save operation failed!');
             return view('pages.profile');
         }
+    }
+
+    public function transHistory(){
+        $id = Auth::id();
+        $transactions = Transaction::where('user_id', '=', $id)->get();
+
+        return view('pages.transhistory')->with('transactions', $transactions);
+
     }
 
     

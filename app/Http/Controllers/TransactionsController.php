@@ -47,7 +47,7 @@ class TransactionsController extends Controller
                 $transaction->user_id = Auth::id();
                 $transaction->type = request('type');
                 $transaction->amount = request('amount');
-                $transaction->status = "Requested"; 
+                $transaction->status = "Unsuccessful";
 
                 $mpesa= new \Safaricom\Mpesa\Mpesa();
 
@@ -67,24 +67,25 @@ class TransactionsController extends Controller
                 );
 
                 //echo $stkPushSimulation;
-                $resp = json_decode($stkPushSimulation, true);
-                $reqId = $resp['CheckoutRequestID'];
+                if($stkPushSimulation){
+                    $resp = json_decode($stkPushSimulation, true);
+                    $reqId = $resp['CheckoutRequestID'];
 
-                session(['reqID' => $reqId]);
+                    session(['reqID' => $reqId]);
+                }
+                
 
                 //echo $reqId;
 
                 if($stkPushSimulation){
                     if($this->confirmPayment()){
-                        //echo "Hello mamammuuuii";
+                        //updating transaction status
+                        $transaction->status = "Complete";
+
                         if(request('type') == '1'){
                             if(Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->exists()){
                                 $loan = Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->first();
-                                /*foreach ($loans as $loan) {
-                                    $prevBal = $loan->balance;
-                                    $loan->balance = ($prevBal - request('amount'));
-                                    $loan->save();
-                                }*/
+                                
                                 $prevBal = $loan->balance;
                                 $loan->balance = ($prevBal - request('amount'));
                                 $loan->save();
@@ -108,7 +109,7 @@ class TransactionsController extends Controller
                         
                     }
                     else{
-                        //echo "Wrong bark dooogg";
+                        //echo "Wrong bark daawg";
                         return view('pages.transact');
                         
                     }
@@ -143,7 +144,7 @@ class TransactionsController extends Controller
         //
     }
 
-    public function  sendSms($phone, $message){
+    public function sendSms($phone, $message){
 
         $username = "tetrasms";
             $apiKey = "fc4189a9408886c4ea089277c3189b53db65baddd8050d6ea15d55be3985d186";
@@ -182,7 +183,7 @@ class TransactionsController extends Controller
 
         $mpesa= new \Safaricom\Mpesa\Mpesa();
 
-        $callback_url = "https://8c92a58071e4.ngrok.io/payment/response";
+        $callback_url = "https://mchamatest.jeffreykingori.dev/payment/response";
         $stkPushSimulation=$mpesa->STKPushSimulation(
             '174379', //Bussiness Short Code
             'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
@@ -197,11 +198,13 @@ class TransactionsController extends Controller
             ''
         );
 
-        
-        $resp = json_decode($stkPushSimulation, true);
-        $reqId = $resp['CheckoutRequestID'];
+        if($stkPushSimulation){
+            $resp = json_decode($stkPushSimulation, true);
+            $reqId = $resp['CheckoutRequestID'];
 
-        session(['reqID' => $reqId]);
+            session(['reqID' => $reqId]);
+        }
+        
 
         //echo $reqId;
 

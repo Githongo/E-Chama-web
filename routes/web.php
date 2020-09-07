@@ -31,8 +31,10 @@ Auth::routes();
 //user routes
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/rotationlist', 'HomeController@rotationList')->name('home.rotations');
+Route::get('/history', 'HomeController@transHistory')->name('transactions.history');
 Route::get('/profile', 'HomeController@profileSettings')->name('user.profile');
 Route::post('/user/updateProfile', 'HomeController@updateProfile');
+
 Route::get('/payment/response', 'TransactionsController@processSTKPushRequestCallback');
 Route::resource('/loans', 'LoansController', ['except' => ['create', 'show']]);
 Route::resource('/transactions', 'TransactionsController', ['except' => ['show', 'create', 'destroy']]);

@@ -22,9 +22,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix('/user')->group( function(){
     Route::post('oauth', 'api\v1\AuthenticationController@authenticate');
     Route::get('all', 'api\v1\UserController@index')->middleware('auth:api');
+    Route::get('history/{id}', 'api\v1\UserController@transHistory')->middleware('auth:api');
     Route::post('new', 'api\v1\UserController@create');
     Route::post('forgot', 'Auth\ForgotPasswordController');
-    Route::post('update', 'api\v1\UserController@update');
+    Route::post('update', 'api\v1\UserController@update')->middleware('auth:api');
     
 });
 

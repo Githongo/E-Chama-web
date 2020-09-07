@@ -33,7 +33,6 @@
                                 
                             <form method="POST" action="/user/updateProfile">
                                 @csrf
-                                <input type="hidden" value="{{ Auth::user()->id }}" />
                                 <div class="form-row">
                                     <div class="col d-flex flex-column flex-sm-row justify-content-center mb-3">
                                         <div class="text-center mb-2 mb-sm-0">

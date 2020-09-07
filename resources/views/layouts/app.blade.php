@@ -75,8 +75,8 @@
 
                             <li class="drop-down"><a href="">{{ Auth::user()->name }}</a>
                             <ul>
-                            <li><a href="#">Profile</a></li>
-                            <li><a href="#">History</a></li>
+                            <li><a href="{{ route('user.profile') }}">Profile</a></li>
+                            <li><a href="{{ route('transactions.history') }}">History</a></li>
                             <div class="dropdown-divider"></div>
                             <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}"

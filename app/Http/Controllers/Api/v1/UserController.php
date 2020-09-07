@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\Role;
+use App\Transaction;
 
 class UserController extends Controller
 {
@@ -47,6 +49,10 @@ class UserController extends Controller
             'wallet' => 0.00,
             'password' => Hash::make($data['password']),
         ]);
+
+        //attach user role
+        $role = Role::select('id')->where('name', 'user')->first();
+        $newUser->roles()->attach($role);
 
         return response(["data" => [
             "success" => 1,
@@ -122,7 +128,7 @@ class UserController extends Controller
                     "success" => 1,
                     "updated" => true,
                     "message" => "User details updated successfully",
-                    "updated" => $updateUser
+                    "updates" => $updateUser
                 ]]);
             }
             else{
@@ -154,6 +160,17 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function transHistory($id){
+        $transactions = Transaction::where('user_id', '=', $id)->get();
+
+        return response(["data" => [
+            "success" => 1,
+            "processed" => true,
+            "message" => "Transaction History retrieved successfully",
+            "data" => $transactions
+        ]]);
     }
 
     

@@ -106,11 +106,11 @@ class ApiController extends Controller
                 $transaction->user_id = Auth::id();
                 $transaction->type = request('type');
                 $transaction->amount = request('amount');
-                $transaction->status = "Requested"; 
+                $transaction->status = "Unsuccessful"; 
 
                 $mpesa= new \Safaricom\Mpesa\Mpesa();
 
-                $callback_url = "https://8c92a58071e4.ngrok.io/payment/response";
+                $callback_url = "https://mchamatest.jeffreykingori.dev/payment/response";
                 $stkPushSimulation=$mpesa->STKPushSimulation(
                     '174379', //Bussiness Short Code
                     'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
@@ -133,7 +133,9 @@ class ApiController extends Controller
 
                 if($stkPushSimulation){
                     if($this->confirmPayment()){
-                        //echo "Hello mamammuuuii";
+                        //updating transaction status;
+                        $transaction->status = "Processing";
+                        
                         if(request('type') == '1'){
                             if(Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->exists()){
                                 $loan = Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->first();

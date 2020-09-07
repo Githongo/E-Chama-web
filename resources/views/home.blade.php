@@ -142,12 +142,12 @@
                         </div>
                         <div class="col-md-4 col-sm-4">
                         <div class="wrimagecard wrimagecard-topimage">
-                            <a href="#">
+                            <a href="{{ route('transactions.history') }}">
                             <div class="wrimagecard-topimage_header" style="background-color:  rgba(250, 188, 9, 0.1)">
                                 <center><i class="fa fa-table" style="color:#fabc09"> </i></center>
                             </div>
                             <div class="wrimagecard-topimage_title">
-                                <h4>Ledger
+                                <h4>History
                                 <div class="pull-right badge" id="WrInformation"></div></h4>
                             </div>
                             
