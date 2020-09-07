@@ -95,9 +95,54 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        if(!User::where('id', '=', request('user_id'))->exists()){
+            return response(["data" => [
+                "success" => 0,
+                "submitted" => false,
+                "message" => "The User Identifier provided is invalid"
+            ]]);
+        }
+
+        $validatedData = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'phone' => ['required', 'max:12', 'min:12'],
+        ]);
+
+        if($validatedData){
+            $updateUser = User::find(request('user_id'));
+            $updateUser->name = request('name');
+            $updateUser->email = request('email');
+            $updateUser->phone = request('phone');
+
+            if($updateUser->save()){
+                return response(["data" => [
+                    "success" => 1,
+                    "updated" => true,
+                    "message" => "User details updated successfully",
+                    "updated" => $updateUser
+                ]]);
+            }
+            else{
+                return response(["data" => [
+                    "success" => 0,
+                    "updated" => false,
+                    "message" => "User detail update operation failed"
+                ]]);
+            }
+        }
+        else{
+            return response(["data" => [
+                "success" => 0,
+                "updated" => false,
+                "message" => "Input validation failed"
+            ]]);
+        }
+
+        
+        
     }
 
     /**

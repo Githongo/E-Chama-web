@@ -49,10 +49,7 @@
                                     <div class="col-md-7">
                                         <div class="form-group"><label class="small mb-1" for="inputAmount">Amount</label><input class="form-control" id="inputAmount" type="number" placeholder="Enter Amount" name="amount" required /></div>
                                     </div>
-                                    <!--
-                                    <input type="number" id="checkout-id" value="" ></input>
-                                    <textarea cols="100" rows="2" id="responseData" readonly></textarea>
-                                    -->
+                                    
                                     
                                 </div>
                                 

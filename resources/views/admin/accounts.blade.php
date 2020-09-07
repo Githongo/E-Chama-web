@@ -54,8 +54,8 @@
                                 @endif
                                 
                                 @if (Session::has('account_form_status'))
-                                    <div class="alert alert-info" role="alert">
-                                        {{ session('trans_form_status')  }}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ session('account_form_status')  }}
                                     </div> 
                                 @endif
                                 @if ($errors->any())
@@ -69,7 +69,7 @@
                                 @endif
 
                                 
-                            <form method="POST" action="{{ route('accounts.transfer') }}">
+                            <form method="POST" action="{{ route('admin.accounts.transfer') }}">
                                 @csrf
             
                                 <div class="form-row">

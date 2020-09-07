@@ -35,5 +35,32 @@ class HomeController extends Controller
         return view('pages.rotationlist')->with('users', $users);
     }
 
+    public function profileSettings(){
+        return view('pages.profile');
+    }
+
+    public function updateProfile(Request $request){
+
+        $data = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'phone' => ['required', 'max:12', 'min:12'],
+        ]);
+
+        $updateUser = User::find(1);
+        $updateUser->name = $data['name'];
+        $updateUser->email = $data['email'];
+        $updateUser->phone = $data['phone'];
+
+        if($updateUser->save()){
+            $request->session()->flash('profile_form_status', 'Profile details updated successfully :)');
+            return redirect(route('user.profile')); 
+        }
+        else{
+            $request->session()->flash('profile_form_status', 'Save operation failed!');
+            return view('pages.profile');
+        }
+    }
+
     
 }

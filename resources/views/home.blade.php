@@ -156,7 +156,7 @@
                         </div>
                         <div class="col-md-4 col-sm-4">
                         <div class="wrimagecard wrimagecard-topimage">
-                            <a href="#">
+                            <a href="{{ route('user.profile') }}">
                                 <div class="wrimagecard-topimage_header" style="background-color: rgba(121, 90, 71, 0.1)">
                             <center><i class="fa fa-user" style="color:#795a47"> </i></center> 
                             </div>
@@ -170,8 +170,6 @@
                         </div>
                         
                     </div>
-
-
 
                    
                                 </div>

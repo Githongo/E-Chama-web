@@ -71,7 +71,7 @@ class LoansController extends Controller
 
         if($loan->save()){
             $request->session()->flash('loan_form_status', 'Loan Application Submitted');
-            return view('pages.newloan');
+            return ('pages.newloan');
         }else{
             $request->session()->flash('loan_form_status', 'Loan application failed...please try again');
             return view('pages.newloan');
@@ -126,6 +126,6 @@ class LoansController extends Controller
     public function destroy(Loan $loan)
     {
         $loan->delete();
-        $redirect()->route('admin.loans.requests');
+        return redirect(route('admin.loans.requests'));
     }
 }
