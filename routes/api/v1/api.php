@@ -13,19 +13,16 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-/*
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
+
 
 //user
 Route::prefix('/user')->group( function(){
-    Route::post('oauth', 'api\v1\AuthenticationController@authenticate');
-    Route::get('all', 'api\v1\UserController@index')->middleware('auth:api');
+    Route::post('oauth', 'Api\v1\AuthenticationController@authenticate');
+    Route::get('all', 'Api\v1\UserController@index')->middleware('auth:api');
     Route::get('history/{id}', 'api\v1\UserController@transHistory')->middleware('auth:api');
-    Route::post('new', 'api\v1\UserController@create');
+    Route::post('new', 'Api\v1\UserController@create');
     Route::post('forgot', 'Auth\ForgotPasswordController');
-    Route::post('update', 'api\v1\UserController@update')->middleware('auth:api');
+    Route::post('update', 'Api\v1\UserController@update')->middleware('auth:api');
     
 });
 
