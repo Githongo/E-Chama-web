@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/user')->group( function(){
     Route::post('oauth', 'Api\v1\AuthenticationController@authenticate');
     Route::get('all', 'Api\v1\UserController@index')->middleware('auth:api');
-    Route::get('history/{id}', 'api\v1\UserController@transHistory')->middleware('auth:api');
+    Route::get('history/{id}', 'Api\v1\UserController@transHistory')->middleware('auth:api');
     Route::post('new', 'Api\v1\UserController@create');
     Route::post('forgot', 'Auth\ForgotPasswordController');
     Route::post('update', 'Api\v1\UserController@update')->middleware('auth:api');
@@ -29,8 +29,8 @@ Route::prefix('/user')->group( function(){
 });
 
 Route::prefix('/process')->group( function(){
-    Route::post('loans/new', 'api\v1\ApiController@newLoan')->middleware('auth:api');
-    Route::post('transactions/new', 'api\v1\ApiController@newTransaction')->middleware('auth:api');
+    Route::post('loans/new', 'Api\v1\ApiController@newLoan')->middleware('auth:api');
+    Route::post('transactions/new', 'Api\v1\ApiController@newTransaction')->middleware('auth:api');
     
 });
 
