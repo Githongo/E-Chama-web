@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\v1;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,6 +10,7 @@ use App\Loan;
 use App\Transaction;
 use App\User;
 use AfricasTalking\SDK\AfricasTalking;
+use Safaricom\Mpesa\Mpesa;
 
 class ApiController extends Controller
 {
@@ -18,18 +19,18 @@ class ApiController extends Controller
     public function newLoan(Request $request){
         //Check if user has an existing request for a loan
         if(Loan::where('user_id', '=', request('user_id'))->where( 'status', '=', "Requested" )->exists()){
-            return json_encode(["data" => [
+            return json_encode([
                 "success" => 0,
                 "submitted" => false,
                 "message" => "You Already have an existing Request for a Loan!"
-            ]]);
+            ]);
         }
         if(!User::where('id', '=', request('user_id'))->exists()){
-            return json_encode(["data" => [
+            return json_encode([
                 "success" => 0,
                 "submitted" => false,
                 "message" => "The User Identifier provided is invalid"
-            ]]);
+            ]);
         }
 
         //validate request data
@@ -58,26 +59,26 @@ class ApiController extends Controller
             $loan->start_date = request('repayment_date');
         }
         else{
-            return json_encode(["data" => [
+            return json_encode([
                 "success" => 0,
                 "submitted" => false,
                 "message" => "Input validation failed"
-            ]]);
+            ]);
         }
 
         //JSON Response
         if($loan->save()){
-            return json_encode(["data" => [
+            return json_encode([
                 "success" => 1,
                 "submitted" => true,
                 "message" => "Loan Application Successful"
-            ]]);
+            ]);
         }else{
-            return json_encode(["data" => [
+            return json_encode([
                 "success" => 0,
                 "submitted" => false,
                 "message" => "Loan Application failed, please try agaoin later"
-            ]]);
+            ]);
         }
 
         
@@ -86,11 +87,11 @@ class ApiController extends Controller
     //Create and store a new Transaction
     public function newTransaction(Request $request){
         if(!User::where('id', '=', request('user_id'))->exists()){
-            return response(["data" => [
+            return response([
                 "success" => 0,
                 "submitted" => false,
                 "message" => "The User Identifier provided is invalid"
-            ]]);
+            ]);
         }
 
         $validatedData = $request->validate([
@@ -108,7 +109,7 @@ class ApiController extends Controller
                 $transaction->amount = request('amount');
                 $transaction->status = "Unsuccessful"; 
 
-                $mpesa= new \Safaricom\Mpesa\Mpesa();
+                $mpesa= new Mpesa();
 
                 $callback_url = "https://mchamatest.jeffreykingori.dev/payment/response";
                 $stkPushSimulation=$mpesa->STKPushSimulation(
@@ -139,11 +140,7 @@ class ApiController extends Controller
                         if(request('type') == '1'){
                             if(Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->exists()){
                                 $loan = Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->first();
-                                /*foreach ($loans as $loan) {
-                                    $prevBal = $loan->balance;
-                                    $loan->balance = ($prevBal - request('amount'));
-                                    $loan->save();
-                                }*/
+                               
                                 $prevBal = $loan->balance;
                                 $loan->balance = ($prevBal - request('amount'));
                                 $loan->save();
@@ -151,11 +148,11 @@ class ApiController extends Controller
                                 $this->sendSms($request->phone, $loanMsg);
                             }
                             else{
-                                return response(["data" => [
+                                return response([
                                     "success" => 0,
                                     "submitted" => false,
                                     "message" => "You have no active loans to service"
-                                ]]);
+                                ]);
                             }
                                 
                         }
@@ -170,35 +167,35 @@ class ApiController extends Controller
                         
                     }
                     else{
-                        return response(["data" => [
+                        return response([
                             "success" => 0,
                             "processed" => false,
                             "message" => "An error occured, payment not recieved"
-                        ]]);
+                        ]);
                     }
                 }
            
             }
             else{
-                return response(["data" => [
+                return response([
                     "success" => 0,
                     "processed" => false,
                     "message" => "Input validation failed"
-                ]]);
+                ]);
             } 
     
             if($transaction->save()){
-                return response(["data" => [
+                return response([
                     "success" => 1,
                     "processed" => true,
                     "message" => "Payment recieved! Transaction completed successfully..."
-                ]]);
+                ]);
             }else{
-                return response(["data" => [
+                return response([
                     "success" => 0,
                     "processed" => false,
                     "message" => "Transaction failed, please try agaoin later"
-                ]]);
+                ]);
             }
 
 
@@ -220,10 +217,11 @@ class ApiController extends Controller
                 elseif($transResponse->ResultCode == 1032){
                     //echo $transResponse->ResultDesc;
                     $success = false;
-                    $errorMsg = (["data" => [
+                    $errorMsg = ([
                         "success" => 0,
-                        "error" => "Transaction failed! Request Cancelled by user"
-                    ]]);
+                        "message" => "Transaction failed! Request Cancelled by user",
+                        "error" => "The request was cancelled"
+                    ]);
                     //echo json_encode($errorMsg);
 
                 }
@@ -273,7 +271,11 @@ class ApiController extends Controller
                     //echo json_encode($result);
                    
                     } catch (\Exception $e) {
-                    echo json_encode(["Error" => $e->getMessage()]);
+                    echo json_encode([
+                        "success" => 0,
+                        "message" => "An error occured during sending the confirmation SMS",
+                        "errors" => $e->getMessage()
+                    ]);
                 }
 
     }

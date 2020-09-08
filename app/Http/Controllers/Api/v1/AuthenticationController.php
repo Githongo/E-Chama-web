@@ -18,29 +18,30 @@ class AuthenticationController extends Controller
         if (Auth::attempt($credentials)) {
             $user = new UserResource((Auth::user()));
             $token = Auth::user()->createToken('authToken')->accessToken;
-            return response([ "data" => [
+            return response([
                 "success" => 1,
                 "authorized" => true,
                 "message" => "Authenticated successfully",
                 "user" => Auth::user(),
                 "token" => $token
-            ]]);
+            ]);
         }
         else{
-            return response(["data" => [
+            return response([
                 "success" => 0,
                 "authorized" => false,
                 "message" => "Invalid Credentials"
-            ]]);
+            ]);
         }
     }
 
     public function resetPassword(Request $request){
         $email = $request->validate(['email' => ['required', 'email']]);
 
-        return response(["data" => [
-            "success" => 1
-        ]]);
+        return response([
+            "success" => 1,
+            "message" => "Password reset request sent successfully to email."
+        ]);
 
     }
 }

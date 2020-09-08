@@ -67,6 +67,7 @@ class TransactionsController extends Controller
                 );
 
                 //echo $stkPushSimulation;
+                
                 if($stkPushSimulation){
                     $resp = json_decode($stkPushSimulation, true);
                     $reqId = $resp['CheckoutRequestID'];
@@ -256,7 +257,7 @@ class TransactionsController extends Controller
         return $STKPushRequestStatus;
     }
 
-    /*
+    
     public static function processSTKPushRequestCallback(){
         $callbackJSONData=file_get_contents('php://input');
         $callbackData=json_decode($callbackJSONData);
@@ -271,7 +272,7 @@ class TransactionsController extends Controller
         $b2CUtilityAccountAvailableFunds=$callbackData->Body->stkCallback->CallbackMetadata->Item[3]->Value;
         $transactionDate=$callbackData->Body->stkCallback->CallbackMetadata->Item[4]->Value;
         $phoneNumber=$callbackData->Body->stkCallback->CallbackMetadata->Item[5]->Value;
-
+/*
         $callbackData=$mpesa->finishTransaction();
 
         $newTransaction = new Transaction;
@@ -294,8 +295,8 @@ class TransactionsController extends Controller
             $request->session()->flash('trans_form_status', 'Transaction not completed');
             return view('pages.transact');
         }     
-        
-    }*/
+        */
+    }
 
     
     

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\v1;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Role;
 use App\Transaction;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -20,11 +21,11 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        return response(["data" => [
+        return response([
             "success" => 1,
             "message" => "Fetched all users",
             "users" => $users
-        ]]);
+        ]);
 
     }
 
@@ -35,30 +36,38 @@ class UserController extends Controller
      */
     public function create(Request $request)
     {
-        $data = $request->validate([
+        $validator = Validator::make($request->all(), [ 
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'phone' => ['required', 'max:12', 'min:12', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'], 
+            
         ]);
+        if ($validator->fails()) { 
+            return response([
+                "success" => 0,
+                "message" => "Input data is invalid",
+                "errors"=>$validator->errors()
+            ]);          
+        }
 
         $newUser = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'phone' => $data['phone'],
+            'name' => request('name'),
+            'email' => request('email'),
+            'phone' => request('phone'),
             'wallet' => 0.00,
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make(request('password')),
         ]);
 
         //attach user role
         $role = Role::select('id')->where('name', 'user')->first();
         $newUser->roles()->attach($role);
 
-        return response(["data" => [
+        return response([
             "success" => 1,
             "message" => "User registered successfully",
             "user" => $newUser
-        ]]);
+        ]);
     }
 
     /**
@@ -104,47 +113,55 @@ class UserController extends Controller
     public function update(Request $request)
     {
         if(!User::where('id', '=', request('user_id'))->exists()){
-            return response(["data" => [
+            return response([
                 "success" => 0,
                 "submitted" => false,
                 "message" => "The User Identifier provided is invalid"
-            ]]);
+            ]);
         }
 
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [ 
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'phone' => ['required', 'max:12', 'min:12'],
+            
         ]);
+        if ($validator->fails()) { 
+            return response([
+                "success" => 0,
+                "message" => "Input data is invalid",
+                "errors"=>$validator->errors()
+            ]);          
+        }
 
-        if($validatedData){
+        if($validator){
             $updateUser = User::find(request('user_id'));
             $updateUser->name = request('name');
             $updateUser->email = request('email');
             $updateUser->phone = request('phone');
 
             if($updateUser->save()){
-                return response(["data" => [
+                return response([
                     "success" => 1,
                     "updated" => true,
                     "message" => "User details updated successfully",
                     "updates" => $updateUser
-                ]]);
+                ]);
             }
             else{
-                return response(["data" => [
+                return response([
                     "success" => 0,
                     "updated" => false,
                     "message" => "User detail update operation failed"
-                ]]);
+                ]);
             }
         }
         else{
-            return response(["data" => [
+            return response([
                 "success" => 0,
                 "updated" => false,
                 "message" => "Input validation failed"
-            ]]);
+            ]);
         }
 
         
@@ -165,12 +182,12 @@ class UserController extends Controller
     public function transHistory($id){
         $transactions = Transaction::where('user_id', '=', $id)->get();
 
-        return response(["data" => [
+        return response([
             "success" => 1,
             "processed" => true,
             "message" => "Transaction History retrieved successfully",
             "data" => $transactions
-        ]]);
+        ]);
     }
 
     
