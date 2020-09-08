@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\User;
 use App\Role;
 use App\Transaction;
+use App\Notice;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -89,7 +90,22 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        if(!User::where('id', '=', $id)->exists()){
+            return response([
+                "success" => 0,
+                "submitted" => false,
+                "message" => "The User Identifier provided is invalid"
+            ]);
+        }
+
+        $foundUser = User::find($id);
+
+        return response([
+            "success" => 1,
+            "message" => "User found",
+            "user" => $foundUser
+        ]);
+
     }
 
     /**
@@ -188,6 +204,17 @@ class UserController extends Controller
             "message" => "Transaction History retrieved successfully",
             "data" => $transactions
         ]);
+    }
+
+    public function getNotices(){
+        $notices = Notice::all();
+
+        return response([
+            "success" => 1,
+            "message" => "Notices retrived successfully",
+            "data" => $notices
+        ]);
+
     }
 
     

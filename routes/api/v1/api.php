@@ -23,6 +23,8 @@ Route::prefix('/user')->group( function(){
     Route::post('new', 'Api\v1\UserController@create');
     Route::post('forgot', 'Auth\ForgotPasswordController');
     Route::post('update', 'Api\v1\UserController@update')->middleware('auth:api');
+    Route::get('find/{id}', 'Api\v1\UserController@show');
+    Route::get('notices', 'Api\v1\UserController@getNotices')->middleware('auth:api');
     
 });
 
