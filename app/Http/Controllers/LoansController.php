@@ -71,7 +71,7 @@ class LoansController extends Controller
 
         if($loan->save()){
             $request->session()->flash('loan_form_status', 'Loan Application Submitted');
-            return ('pages.newloan');
+            return redirect(route('loans.index'));
         }else{
             $request->session()->flash('loan_form_status', 'Loan application failed...please try again');
             return view('pages.newloan');
@@ -112,7 +112,7 @@ class LoansController extends Controller
     {
         $loan->status = "Active";
         if($loan->save()){
-            return view('admin.loanreq');
+            return redirect(route('admin.loans.requests'));
         }
 
     }

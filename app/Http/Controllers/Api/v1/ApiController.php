@@ -11,6 +11,7 @@ use App\Transaction;
 use App\User;
 use AfricasTalking\SDK\AfricasTalking;
 use Safaricom\Mpesa\Mpesa;
+use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
@@ -34,15 +35,24 @@ class ApiController extends Controller
         }
 
         //validate request data
-        $validatedData = $request->validate([
+        
+        $validator = Validator::make($request->all(), [ 
             'grant_date' => ['required'],
             'repayment_date' => ['required'],
             'amount' => ['required', 'numeric', 'min:1000'],
             'repayment_period' => ['required']
+            
         ]);
+        if ($validator->fails()) { 
+            return response([
+                "success" => 0,
+                "message" => "Input data is invalid",
+                "errors"=>$validator->errors()
+            ]);          
+        }
 
         //Insert validated data to DB
-        if($validatedData){
+        if($validator){
             $amt = request('amount');
             $repay_period = request('repayment_period');
             $interest = (0.005 * $repay_period) * $amt ;
@@ -83,6 +93,37 @@ class ApiController extends Controller
 
         
     }
+    
+    public function getLoanBalance(Request $request){
+        if(!User::where('id', '=', request('user_id'))->exists()){
+            return response([
+                "success" => 0,
+                "submitted" => false,
+                "message" => "The User Identifier provided is invalid"
+            ]);
+        }
+        if(Loan::where('user_id', '=', request('user_id'))->where( 'status', '=', "Active" )->exists()){
+                                $loan = Loan::where('user_id', '=', request('user_id'))->where( 'status', '=', "Active" )->first();
+                               
+                                $loanBal = $loan->balance;
+                                return response([
+                                    "success" => 1,
+                                    "active" => true,
+                                    "message" => "Loan Balance retrieved successfully",
+                                    "balance" => $loanBal
+                                ]);
+                                
+                            }
+                            else{
+                                return response([
+                                    "success" => 1,
+                                    "active" => false,
+                                    "message" => "You have no active loans to service",
+                                    "balance" => 0
+                                ]);
+                            }
+        
+    }
 
     //Create and store a new Transaction
     public function newTransaction(Request $request){
@@ -93,16 +134,24 @@ class ApiController extends Controller
                 "message" => "The User Identifier provided is invalid"
             ]);
         }
-
-        $validatedData = $request->validate([
+        
+        $validator = Validator::make($request->all(), [ 
             'amount' => ['required', 'numeric', 'min:100'],
-            'phone' => ['required', 'numeric']
+            'phone' => ['required', 'numeric'],
+            'type' => ['required']
         ]);
+        if ($validator->fails()) { 
+            return response([
+                "success" => 0,
+                "message" => "Input data is invalid",
+                "errors"=>$validator->errors()
+            ]);          
+        }
 
 
             //New
 
-            if($validatedData){
+            if($validator){
                 $transaction = new Transaction;
                 $transaction->user_id = Auth::id();
                 $transaction->type = request('type');
@@ -138,8 +187,8 @@ class ApiController extends Controller
                         $transaction->status = "Processing";
                         
                         if(request('type') == '1'){
-                            if(Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->exists()){
-                                $loan = Loan::where('user_id', '=', Auth::id())->where( 'status', '=', "Active" )->first();
+                            if(Loan::where('user_id', '=', request('user_id'))->where( 'status', '=', "Active" )->exists()){
+                                $loan = Loan::where('user_id', '=', request('user_id'))->where( 'status', '=', "Active" )->first();
                                
                                 $prevBal = $loan->balance;
                                 $loan->balance = ($prevBal - request('amount'));
@@ -185,10 +234,13 @@ class ApiController extends Controller
             } 
     
             if($transaction->save()){
+                $user = User::findOrFail(request('user_id'));
+                
                 return response([
                     "success" => 1,
                     "processed" => true,
-                    "message" => "Payment recieved! Transaction completed successfully..."
+                    "message" => "Payment recieved! Transaction completed successfully...",
+                    "balance" => $user->wallet
                 ]);
             }else{
                 return response([

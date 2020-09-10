@@ -196,6 +196,14 @@ class UserController extends Controller
     }
 
     public function transHistory($id){
+        if(!User::where('id', '=', $id)->exists()){
+            return response([
+                "success" => 0,
+                "submitted" => false,
+                "message" => "The User Identifier provided is invalid"
+            ]);
+        }
+        
         $transactions = Transaction::where('user_id', '=', $id)->get();
 
         return response([
