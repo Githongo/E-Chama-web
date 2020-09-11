@@ -12,8 +12,12 @@
             <div class="card">
                 <div class="card-header">M-Chama APIs</div>
                 <div class="card-body">
-                    <h4> Documentation coming soon...</h4>
-                    <p>For now use the below button to import the postman collection and get to know how to hit the API Endpoints...</p>
+                    <h4> Documentation: </h4>
+                    <a href="https://documenter.getpostman.com/view/11870594/TVK5bfmS">mChama v1.0 API Documentation</a>
+                    <br>
+                    <br>
+                    
+                    <h5> Postman Collection: </h5>
 
                     <div class="postman-run-button"
                         data-postman-action="collection/import"
